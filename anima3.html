@@ -1,0 +1,487 @@
+<!--//http://qaru.site/questions/114321/javascript-reset-setinterval-back-to-0
+-->
+<!-- Teostus: Ivo Kurina ivo.kurina01@gmail.com-->
+
+<html>
+<head>
+<style>
+canvas {
+ //background: "navy";
+ border: 2px solid #ff0000;
+ background: #000000;
+}
+</style>
+</head>
+
+<!--input type="button" value = "loo" onclick="func1()">
+<input type="button" value = "start" onclick="func4()">
+<input type="button" value = "reset" onclick="func2()">
+<input type="button" value = "stop" onclick="func3()">
+<input type="button" value = "uus" onclick="func5()">
+<input type="button" value = "valem" onclick="valemi_kuva()">
+<p id = "para">Esimene funktsioon </p>
+<p id = "para2">Teine functsioon </p-->
+
+<canvas width = "900" height="700"></canvas>
+<input type="button" value = "kinni" onclick="silm_kinni()">
+<input type="button" value = "lahti" onclick="silm_lahti()">
+<input type="button" value = "pilguta" onclick="silma_pilgutus()">
+<script>
+function Timer(fn, t) {
+    var timerObj = setInterval(fn, t);
+
+    this.stop = function() {
+        if (timerObj) {
+            clearInterval(timerObj);
+            timerObj = null;
+        }
+        return this;
+    }
+
+    // start timer using current settings (if it not already running)
+    this.start = function() {
+        if (!timerObj) {
+            this.stop();
+            timerObj = setInterval(fn, t);
+        }
+        return this;
+    }
+
+    // start with new interval, stop current interval
+    this.reset = function(newT) {
+        t = newT;
+        return this.stop().start();
+    }
+}
+
+   function pane_pix(x,y)
+{
+   pilt.strokeStyle = v;//String(c);
+   pilt.beginPath();
+   pilt.moveTo(x,y);
+   pilt.lineTo(x+1,y);
+   pilt.closePath();
+   pilt.stroke();
+
+}
+
+var hexid = new Array("0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F");
+function a_hex(arv)
+{
+  var jag = (arv / 16) | 0;
+  var mod = arv % 16;
+  return hexid[jag] + hexid[mod];
+}
+
+var par = document.getElementById("para");
+var par2 = document.getElementById("para2");
+var lina = document.querySelector("canvas");
+var pilt = lina.getContext("2d");
+var img1 = document.createElement("img");
+img1.src = "anima0.png";
+var img2 = document.createElement("img");
+img2.src = "anima01.png";
+var i_pirn = document.createElement("img");
+i_pirn.src = "pirn.png";
+var x = 0;
+var timer;
+var arr = new Array("E","=","m","c");
+var s = "";
+var x_t = 0;
+var x_tv = 0;
+var y_s = 210;
+var v_s = "#FF2000";
+var g = 10;
+var k = 0;
+
+var xs;
+var ys;
+var x1;
+
+var y1;
+var yf;
+var faas1 = 1440;
+var faas2 = 1440;
+var faas3 = 1440;
+var v;
+
+
+ var valem_a = new Array(69,61,109,99,114,117,117,116);
+ var valem_sh = new Array(69,61,109,99,114,117,117,116);
+
+  var jg = 128;
+  var a = 0;
+  var ch = 0;
+  var iy = 0;
+  var ix = 0;
+  var mbit7 = 128;
+  var bit7 = 0;
+  var y = 350;
+  var a_s = "";
+  
+  var x1_b = 700;
+  var x2_b = 150;
+
+//========================================================
+function bin_arvude_kuva()
+    {
+      ix = iy;
+      y = 350; 
+      pilt.fillStyle= "black";
+            pilt.fillRect(700,340,65,155);
+            pilt.fillRect(150,340,65,155);
+             pilt.fillStyle= "white";
+     for (var i = 0;i < 8;i++)
+      {
+            
+           //a = short(valem[ix]);  //rotate ylevalt alla
+           a = valem_a[ix];
+          jg = 128;
+     //arv binary stringiks
+          a_s = "";
+          for (var ii = 0;ii < 8;ii++)
+          {
+              
+              if (a / jg >= 1)
+              {
+              //strB[ii] = '1';
+              a_s += "1";
+              a = a % jg;
+              jg /= 2;
+              }
+              else
+              {
+               a_s += "0";
+              //strB[ii] = '0';
+              jg /= 2;
+              }
+          }
+          //outtextxy(x1,y,"           ");
+          //outtextxy(x1,y,strB);
+          
+          pilt.fillText(a_s,x1_b,y);
+         
+          //a = short (valem_sh[i]);
+           a = valem_sh[i];
+          jg =128;
+          //arv binary stringiks
+           a_s = "";
+          for (var ii = 0;ii < 8;ii++)
+          {
+              if (a / jg >= 1)
+              {
+              //strB[ii] = '1';
+              a_s += "1";
+              a = a % jg;
+              jg /= 2;
+              }
+              else
+              {
+              //strB[ii] = '0';
+              a_s += "0";
+              jg /= 2;
+              }
+          }
+          
+          //outtextxy(x2,y,"           ");
+          //outtextxy(x2,y,strB);
+          
+           pilt.fillText(a_s,x2_b,y);
+
+          //rol - bitid vasakule, paremalt tagasi
+          ch = valem_sh[i];
+          if ((mbit7 & ch) == 128) {bit7 = 1;}
+          else  {bit7 = 0;}
+          
+          ch = ch & 127;
+          ch *= 2;
+          ch += bit7;
+          valem_sh[i] = ch;
+          //-----------------------
+          y += 20;
+          ix += 1;
+          if (ix > 7) ix = 0;  
+      }
+      iy -= 1;
+      if (iy < 0) iy = 7;
+      
+   }
+
+//------------------------------------------------
+
+//siinus_laine
+ function siinus_laine(x,y, per_a,orient,vx,faas, suund)
+  //alguspunkt x y, perioodide arv, orientatsioon 0 - horisontaalne 
+  //1 - vertikaalne , color, laine faas, laine suund 0 - edasi 1 - tagasi
+  {
+    //eelmise laine kustutus
+        
+
+   var ii = faas;   
+   if (suund == 0) ii -= 30;  //laine edasi
+    else ii += 30;             //laine  tagasi
+    xl = 0;
+    v = vx;
+    for (var j_k = 0;j_k < per_a;j_k++)
+     {
+     for (var i_k = 0;i_k < 36;i_k ++)
+         {
+         xs = x + xl + i_k;
+      
+         yf = 25.0 * Math.sin(ii * (6.284 / 360) );
+         ii += 10;
+         ys = y + yf;
+         if (orient == 1)
+         pane_pix(ys , xs ); 
+         else
+         pane_pix(xs, ys ); 
+         }
+     ii -= 360;
+     xl += 36;
+     }
+   return ii;
+   }
+
+//========================================================
+function sol_yles() {
+ pilt.strokeStyle = "black";
+ pilt.fillStyle= "black";
+pilt.beginPath();
+pilt.arc(450, y_s, 70, 0, 2 * Math.PI);
+pilt.closePath();
+pilt.stroke();
+pilt.fill();
+   if (g < 240) {
+     g += 10
+     v_s = "#FF" + a_hex(g) + "00";
+   } 
+   pilt.fillStyle = v_s;
+   y_s -= 4;
+pilt.beginPath();
+pilt.arc(450, y_s, 70, 0, 2 * Math.PI);
+pilt.closePath();
+pilt.stroke();
+pilt.fill();
+
+  if (y_s < 100) {
+  func3();
+  kuva_pilt();
+  //pilt.drawImage(img2,302,310);
+  // timer2();
+ // timer2();
+  } 
+}
+//------------------------------
+function kuva_pilt()
+{
+    var loendur = 0;
+    var x_p = 0;
+    var y_p = 0;
+    var x_d = 304;//302;
+    var y_d = 314;//310;
+    var ootus = setInterval(function(){
+    pilt.drawImage(img1,x_p,y_p,300,5,x_d,y_d,300,5);
+      y_p += 5;
+      y_d += 5;
+      loendur += 1;
+     if (loendur == 60) {
+       clearInterval(ootus);
+       timer2(); }
+    },25);
+   //clearTimeout(ootus); 
+
+}
+//----------------------------------------------------
+function silm_lahti()
+{
+  var loendur = 0;
+  var y_p = 155;
+  var y_d = 470;
+  var ootus = setInterval(function(){
+  pilt.drawImage(img2,36,y_p,55,5,340,y_d,55,5);
+      y_p -= 5;
+      y_d -= 5;
+      loendur += 1;
+     if (loendur == 8) {
+       clearInterval(ootus);}
+     },20);
+} 
+function silm_kinni() 
+{
+  var loendur = 0;
+  var y_p = 120;
+  var y_d = 435;
+  var ootus = setInterval(function(){
+  pilt.drawImage(img1,36,y_p,55,5,340,y_d,55,5);
+      y_p += 5;
+      y_d += 5;
+      loendur += 1;
+     if (loendur == 8) {
+       clearInterval(ootus);}
+     },20);
+} 
+function silma_pilgutus()
+{
+  setTimeout(function(){silm_kinni();
+  },500);
+  //silm_kinni();
+  setTimeout(function(){silm_lahti();
+  },700);
+}
+function oota(n)
+{
+  var ootus = setTimeout(function()
+  {},n);
+}
+
+//------------------------------
+function timer1() {
+  timer = new Timer(function() {
+   sol_yles();
+  }, 200);
+ timer.start();
+}
+//------------------------------
+
+   function kordus() {
+    bin_arvude_kuva();
+     pilt.fillStyle= "black";
+    pilt.fillRect(423,169,55,145) 
+    faas1 = siinus_laine(170, 450, 4, 1, "#00FF00", faas1, 0);
+    pilt.fillRect(214,373,109,55);
+    faas2 = siinus_laine(214, 400, 3, 0, "red", faas2, 1);
+    pilt.fillRect(582,373,118,55);
+    faas3 = siinus_laine(590, 400, 3, 0, "red", faas3, 1);
+    k += 1;
+    if (k == 16) {
+    func3();
+     // pilt.drawImage(img2,36,121,55,40,340,435,55,40);
+    setTimeout(function(){ pilt.drawImage(i_pirn,430,330);
+      },100);
+    setTimeout(function(){silm_lahti();
+      },500);
+     // silm_lahti();
+     // oota(2000);
+    setTimeout(function(){valemi_kuva();
+      },1000);
+    
+    }
+   }
+function timer2() {
+   pilt.fillStyle = "white";
+   pilt.font = "12px Georgia";
+   timer = new Timer(function() {
+   kordus();
+  }, 500);
+ timer.start();
+}
+//------------------------------
+
+function valem()
+{
+ 
+ if (x_t < 4){
+  // pilt.fillStyle = "blue";
+ // pilt.fillRect(10,265,100,40);
+  
+    s += arr[x_t];
+    pilt.fillText(s,400,100);}
+ else {
+   // pilt.fillText(s,10,300);
+    pilt.font = "22px Georgia";
+    pilt.fillText("2",483,82);}
+/*
+s = String(x_tv);
+ pilt.fillStyle = "black";
+ pilt.fillText(s,93,282);
+ pilt.fillStyle = "red";
+s = String(x_t);
+ pilt.fillText(s,93,282);
+ x_tv = x_t;
+*/
+
+ x_t += 1;
+ if (x_t === 5) {
+    func3();
+  silma_pilgutus();
+  // pilt.fillText(v_s,10,10);
+    //valemi_kuva();
+   }
+  
+}
+
+//========================================================
+//Kasutamine
+function valemi_kuva() {
+   s = "";
+   x_t = 0;
+  // x_tv = 0;
+   pilt.font = "28px Georgia";
+   pilt.fillStyle = "blue";
+  
+   timer = new Timer(function() {
+   valem();
+  }, 500);
+ timer.start();
+//}
+}
+
+//========================================================
+function func0(){
+par.innerHTML = String(x);
+x += 1;
+}
+
+function func01(){
+par2.innerHTML = String(x);
+x += 1;
+if (x == 10)
+  {
+    func3();
+   // func5();
+  }
+}
+
+function func1(){
+ timer = new Timer(function() {
+    func0();
+    // your function here
+  }, 1000);
+ timer.start();
+}
+
+function func5(){
+ x = 0;
+ timer = new Timer(function() {
+    
+    func01();
+    // your function here
+  }, 1000);
+ timer.start();
+}
+
+function func2(){
+// switch interval to 10 seconds
+  timer.reset(2000);
+}
+
+function func3() {
+// stop the timer
+ timer.stop();
+}
+
+function func4() {
+// start the timer
+ timer.start();
+}
+//================================================//
+//ALGUS
+//------------------------------------------------//
+  // kuva_pilt();
+ 
+// pilt.drawImage(img2,304,314);
+// pilt.strokeStyle = "blue";
+// pilt.strokeRect(340,435,55,30);
+ timer1();
+//timer2();
+</script>
